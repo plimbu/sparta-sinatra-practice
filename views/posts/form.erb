@@ -1,13 +1,40 @@
 <h2>Peters Basic Form</h2>
 
-<form action="/action_page.php">
-  First name:<br>
-  <input type="text" name="firstname" value="Mickey">
-  <br>
-  Last name:<br>
-  <input type="text" name="lastname" value="Mouse">
-  <br><br>
-  <input type="submit" value="Submit">
+<!-- make a post request to post "/" which is the create route  -->
+<!-- below code dynamically gets post depending on id -->
+<!-- if id is empty it will go to root otherwise it will get the post depending on id -->
+<form class ="" action="/<%= @post.id %>" method = "POST">
+  <div class="">
+    <label>Games</label>
+    <input type="text" value ="<%= @post.id %>" name="title" placeholder="enter a title">
+  </div>
+
+  <div class="">
+    <label for="">Body</label>
+    <textarea name="body" placeholder ="Enter the body of the post" ><%= @post.body %></textarea>
+  </div>
+
+  <div class="">
+    <input type="submit" name="" value="save post">
+  </div>
+
+  <!-- method override, middle ware to see if theres any input field with a name of _method -->
+  <!-- override post request with put request -->
+
+
+
+<!-- if post id is not empty we want to make a  put request otherwise we do post request -->
+  <% if(@post.id != "") %>
+    <input type="hidden" name="_method" value="PUT">
+  <%end%>
+    <!--
+    First name:<br>
+    <input type="text" name="firstname" value="Mickey">
+    <br>
+    Last name:<br>
+    <input type="text" name="lastname" value="Mouse">
+    <br><br>
+    <input type="submit" value="Submit"> -->
 </form>
 
-<p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
+<p>If you click the "Submit" button, the form-data will be sent to a page called "/".</p>

@@ -16,43 +16,13 @@ class PostsController < Sinatra::Base
 
 
 
-  #if in development mode use sinatra reloader so we can make view changes live
   configure :development do
     register Sinatra::Reloader
   end
 
-#fake dummy data just used for the purpose of this intro
-  $posts = [{
-  	 id: 0,
-  	 title: "Post 1",
-  	 body: "This is the first post"
-  },
-  {
-      id: 1,
-      title: "Post 2",
-      body: "This is the second post"
-  },
-  {
-      id: 2,
-      title: "Post 3",
-      body: "This is the third post"
-  }]
-
-#end of fake data we will use for this project
 
 
 
-
-  #can't make changes untill site is taken down and app is run again unless we have require "sinatra/reloader"
-  #/ is root directry which is basically whichever root they are on
-  #if you make get request to root then get Hello world
-
-
-
-  #FORM
-  get "/new" do
-erb :"posts/form"
-  end
 
 
 
@@ -60,31 +30,36 @@ erb :"posts/form"
   get "/" do
     #erb looks for file in posts/index directory then renders it
     @title = "Blog Posts"
-    @posts = $posts
+    #grab data as an instance so we can use it in the view
+    @posts = Post.all
     # This page will be rendered AFTER the layout.erb is rendered and inserted where yield is is rendered
     erb :"posts/index"
   end
 
+
+
   #NEW
   get "/new" do
-  "This is the new root"
-  end
-  # SHOW
-  get "/:id" do
-    #params is a has we can access
-    puts params
-    #create a hash called params which stores user id
-    #whatever the user ENTERS INTO THE ID PARAMETER is stored into the id variable
-    id = params[:id]
-@paragraph = $posts[id.to_i]
-@text = $posts[id.to_i]
 
+  post = Post.new
+
+  @post = post
+  post.id =""
+  post.title =""
+  post.body=""
+
+    erb :"posts/new"
+  end
+
+
+
+  # SHOW for each id
+  get "/:id" do
+    id = params[:id].to_i
+
+    @post = Post.find(id)
 
     erb :"posts/show"
-
-
-
-
   end
 
 
@@ -97,28 +72,55 @@ erb :"posts/form"
 
   # CREATE
   post "/" do
-    "This is the create route!"
+    post = Post.new
+    #set post values
+    post.title = params[:title]
+    post.body = params[:body]
+
+    post.save
+
+    redirect "/"
   end
 
   # EDIT
   get "/:id/edit" do
-    id = params[:id]
-
-    "This is the edit route!"
+    id = params[:id].to_i
+    @post = Post.find(id)
+    erb :"posts/edit"
   end
 
   # UPDATE
   put "/:id" do
-    id = params[:id]
 
-    "This is the update route!"
+
+    #grab id from user
+    id = params[:id].to_i
+    # getting post we are editing and setting it to post
+    #get post depending on id
+    post = Post.find(id)
+    # set the title  and body user enters into posts title and body
+    #set posts title and body
+    post.title = params[:title]
+    post.body = params[:body]
+
+    #injects  values above to database running sql command
+    post.save
+
+
+    redirect "/"
+
   end
 
   # DESTROY
   delete "/:id" do
-    id = params[:id]
+    id = params[:id].to_i
+    #accessing delete and then setting everything to empty
 
-    "This is the destroy route!"
+    Post.destroy(id)
+    redirect "/"
+
+
+
   end
 
 
