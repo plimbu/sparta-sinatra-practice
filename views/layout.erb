@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- dynamic title <%= @title %>, saying its not html or css but ruby is what %% does and = is ruby code to show on html -->
+
+  <title><%= @title %></title>
+</head>
+<body>
+
+
+<!-- injecting navigation partial into template -->
+<%= erb(:"partials/navigation", :layout => false) %>
+
+<!-- This will render the template of whatever was rendered/hit in the controller -->
+<%= yield %>
+
+</body>
+</html>

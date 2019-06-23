@@ -1,0 +1,16 @@
+
+
+
+    <h1><%= @post.body %></h1>
+   <p><%= @post.title %></p>
+   <!-- we dont want bottom ruby code to be shown up on page so we don't put
+   equals sign in ice cream cone, bottom code is logic so we don't show it up on screen
+    -->
+
+    <form class ="" action="/<%= @post.id %>" method = "POST">
+      <div class="">
+        <input type="submit" value ="delete" name="title" placeholder="enter a title">
+<!-- override every single time to make post into a delete request -->
+        <input type="hidden" name="_method" value="DELETE">
+
+      </div>
